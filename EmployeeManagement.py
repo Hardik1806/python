@@ -2,10 +2,10 @@ from abc import ABC,abstractmethod
 def decorator(func):
     func()
 class Employee:
-    def __init__(self,company_name,name,__salary):
+    def __init__(self,company_name,name,salary):
         self.company_name=company_name
         self.name=name
-        self.__salary=__salary
+        self.__salary=salary
     @property
     def salary(self):
         return self.__salary
@@ -24,8 +24,8 @@ class Employee:
     def change_company(cls,new_name):
         cls.new_name=new_name
     @staticmethod
-    def is_valid_salary(__salary):
-        if __salary>0:
+    def is_valid_salary(salary):
+        if salary>0:
             return True
     count=0
     @classmethod
@@ -35,8 +35,8 @@ class Employee:
 
     
 class Developer(Employee):
-    def __init__(self,company_name,name,__salary,prog_lang):
-        super().__init__(company_name,name,__salary)
+    def __init__(self,name,salary,prog_lang,**var):
+        super().__init__(name,salary,**var)
         self.prog_lang=prog_lang
     
     def work(self):
@@ -48,8 +48,8 @@ class Tester(Employee):
         print(f"{self.name} is testing software")
 
 class Manager(Employee):
-    def __init__(self,company_name,name,__salary,prog_lang,team_size):
-        super().__init__(company_name,name,__salary,prog_lang)
+    def __init__(self,company_name,name,salary,prog_lang,team_size):
+        super().__init__(company_name,name,salary,prog_lang)
         self.team_size=team_size
     def word(self):
         print(f"{self.name} is managing a team of {self.team_size}")
@@ -59,8 +59,8 @@ class Manager(Employee):
         if team_size>=5:
             return True
 class SeniorDeveloper(Developer):
-    def __init__(self,company_name,name,__salary,prog_lang,team_size,years_experience):
-        super().__init__(company_name,name,__salary,prog_lang,team_size)
+    def __init__(self,company_name,name,salary,prog_lang,team_size,years_experience):
+        super().__init__(company_name,name,salary,prog_lang,team_size)
         self.years_experience=years_experience
     def work(self):
         print(f"{self.name} is leading development in {self.prog_lang} with {self.years_experience} years exp")
@@ -76,12 +76,13 @@ class Intern(Employee,WorkPolicy):
 
     
 class TechLead(Developer,Manager):
-    def __init__(self,company_name,name,__salary,prog_lang,team_size,project_name):
-        super().__init__(company_name,name,__salary,prog_lang,team_size)
+    def __init__(self,name,salary,prog_lang,team_size,project_name,**var):
+        super().__init__(name,salary,prog_lang,team_size,**var)
         self.project_name=project_name
         @decorator
         def work():
             print("LOG calling")
         work()
+t=TechLead("Hardik",10000,"python",5,"bingo")
 print("Mro of Intern class is: ",Intern.mro())
 print("Mro of techlead class is: ",TechLead.mro())
