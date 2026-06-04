@@ -1,7 +1,7 @@
 def log_call(func):
-    def wrapper(*args,**kwargs):
+    def wrapper(*args):
         print(f"[Log] calling {func.__name__}")
-        return func(*args,**kwargs)
+        return func(*args)
     return wrapper
 class Employee:
     total_employees=0
