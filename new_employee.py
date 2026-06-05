@@ -1,9 +1,15 @@
+from abc import ABC ,abstractmethod 
 def log_call(func):
     def wrapper(*args):
         print(f"[Log] calling {func.__name__}")
         return func(*args)
     return wrapper
-class Employee:
+def call(func):
+    def wrapper(*args):
+        print(f"[Log] calling {func.__name__} on {args[0].__class__.__name__}  class")
+        return func(*args)
+    return wrapper
+class Employee():
     total_employees=0
     company_name="IBM"
     def __init__(self,emp_name,salary,):
@@ -21,6 +27,7 @@ class Employee:
             self.__salary=x
         except ValueError as e:
             print("Error:",e)
+    @abstractmethod
     def work(self):
         print(f"{self.emp_name} is working")
     @classmethod
@@ -60,27 +67,81 @@ class Manager(Employee):
             return True
         else:
             return False
+
 class SeniorDeveloper(Developer):
     def __init__(self,emp_name,salary,lang,years_experience):
         super().__init__(emp_name,salary,lang)
         self.years_experience=years_experience
     def work(self):
         print(f"{self.emp_name} is leading development in {self.lang} with {self.years_experience} years exp")
+class WorkPolicy(ABC):
+    @abstractmethod
+    def policy():
+        pass
+    @abstractmethod
+    def max_hours():
+        pass
 
+
+class Intern(Employee):
+    def __init__(self,emp_name,salary):
+        super().__init__(emp_name,salary)
+    def work(self):
+        print(f"{self.emp_name} is working as an Intern")
+    @call
+    def policy(self):
+        print("Intern Works only 4 hours")
+    @call
+    def max_hours(self):
+        print("4 is the maximum hours for Intern")
+class PartTimeEmployee(Employee,WorkPolicy):
+    @call
+    def policy(self):
+        print("PartTimeEmployee works for 6 hours")
+    def max_hours(self):
+        print("6 is the maximum hours for PartTimeEmployee")
+obj_emp=[]
 a=Employee("Hardik",-100)
 b=Employee("Harish",10000)
-c=Developer("nilesh",1000,"python")
-d=Tester("Raman",10000000)
-e=Manager("Kartik",100000000,10)
+c=Developer("Charlie",1000,"java")
+obj_emp.append(a)
+obj_emp.append(b)
+obj_emp.append(c)
+print(a.get_salary())
 print(b.get_salary())
-print(b.company_name)
-print(a.change_company("Dell"))
-print(b.company_name)
+Employee.change_company("Google")
+print(a.company_name)
+Employee.get_headcount()
+print(a.is_valid_salary(c.get_salary()))
 c.work()
+d=Tester("David",10000000)
+e=Manager("Eve",100000000,4)
+obj_emp.append(d)
+obj_emp.append(e)
+print("Day-2 after creating Tester and Manager")
 d.work()
 e.work()
-print(Employee.get_headcount())
-print(Employee.is_valid_salary(-100))
-f=SeniorDeveloper("Rishabh",10000,"java",8)
+print(f"After adding tester {Employee.total_employees} is the headcount")
+x=e.can_approve(e.team_size)
+print(x==False and "Manager cannot approve")
+print("Manager can approve" if x==True else"") 
+f=SeniorDeveloper("Frank",10000,"Python",5)
+obj_emp.append(f)
 f.work()
-
+g=Intern("Grace",100000)
+obj_emp.append(g)
+print("Day-3 after adding Intern class which is a subclass of Employee and WorkPolicy ")
+g.work()
+g.policy()
+print(f"{Employee.total_employees} is the headcount after adding intern class")
+g.max_hours()
+h=PartTimeEmployee("janice",6999)
+h.policy()
+h.max_hours()
+emp_list=[]
+n=len(obj_emp)
+for i in range (n):
+    x=obj_emp[i]
+    z=x.emp_name
+    emp_list.append(z)
+print(name.upper()for name in emp_list)
