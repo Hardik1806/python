@@ -1,0 +1,8 @@
+1. Check lines between 2 paragraph
+2. Merging 3 Paragraph
+3. Change logging_file and create seperate method for writing severity
+4. Reduce the no of times withblock is used
+5. Change and count the stats
+
+
+6. Create a csv file manully with below data
